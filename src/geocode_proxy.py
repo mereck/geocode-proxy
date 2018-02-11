@@ -1,8 +1,8 @@
 import logging
 from flask import Flask
 from flask_restful import Resource, Api, abort
-from src.geocode_helper import GeocodeServiceHelper
-from src.geocode_adapters import GoogleAdapter, HereAdapter
+from geocode_helper import GeocodeServiceHelper
+from geocode_adapters import GoogleAdapter, HereAdapter
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 

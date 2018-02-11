@@ -18,13 +18,13 @@ Requirements:
 
 ## Installation
 
-1. Get the dependencies with ```pip install```:
+1. Get the dependencies with ```pip install``` (may need sudo permissions):
 
 ```
 pip install -r requirements.txt
 ```
 
-2. Modify config.ini to include your geocode API provider credentials
+2. Modify ```src/config.ini``` to include your geocode API provider credentials
 (currently tested with Here.com and Google geocode API)
 
 ## Starting the service
@@ -32,7 +32,8 @@ pip install -r requirements.txt
 Run the service for development with Flask web server (default port ```9999```):
 
 ```
-python src\geocode_proxy.py
+cd src
+python3 geocode_proxy.py
 ```
 
 ## Using the API
@@ -56,4 +57,4 @@ Response:
 ## Deployment notes
 
 Flask web server is not designed to be used in production. However, a Flask app is a WSGI application,
-so it can be deployed to production [in a variety of ways] (http://flask.pocoo.org/docs/0.12/deploying/).
+so it can be deployed to production [in a variety of ways](http://flask.pocoo.org/docs/0.12/deploying/).

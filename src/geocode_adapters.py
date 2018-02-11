@@ -1,6 +1,6 @@
 import logging
 from urllib import parse
-from src.geocode_helper import GeocodeServiceHelper
+from geocode_helper import GeocodeServiceHelper
 
 
 class GeocodeServiceInterface:
