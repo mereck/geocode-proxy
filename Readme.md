@@ -10,6 +10,7 @@ Key Features:
 * External configuration file to store API provider secrets (config.ini)
 * Error, Debug and Warning logging capabilities
 * Built-in web server for luxurious development experience (Flask)
+* Command-line parameters for config file, log level, debug setting
 
 
 Requirements:
@@ -92,4 +93,30 @@ For example, to host this app using uwsgi, use the following command:
 
 ```
 uwsgi --socket 0.0.0.0:8000 --protocol=http --plugin python35 --manage-script-name --mount /=geocode_app:app
+```
+
+## Command-line arguments
+
+To see all arguments supported use -h:
+
+```
+python3 geocode_app.py -h
+```
+
+Output:
+
+```
+usage: geocode_app.py [-h] [--debug DEBUG] [--log-level LOG_LEVEL]
+                      [--port PORT] [--config-file CONFIG_FILE]
+
+Geocode Proxy App
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --debug DEBUG         debug mode, default: 1
+  --log-level LOG_LEVEL
+                        log level, default: debug
+  --port PORT           port, default: 9999
+  --config-file CONFIG_FILE
+                        config file, default: config.ini
 ```
