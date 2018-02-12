@@ -24,17 +24,44 @@ Requirements:
 pip install -r requirements.txt
 ```
 
-2. Modify ```src/config.ini``` to include your geocode API provider credentials
+2. Modify ```config.ini``` to include your geocode API provider credentials
 (currently tested with Here.com and Google geocode API)
+
+
+## Running the tests
+
+Running the unit tests:
+
+```
+python3 -m unittest discover -v
+```
+
+Will produce the following output:
+
+```
+test_failover_to_secondary_service (tests.test_geocode_proxy.TestGeocodeProxy) ... ok
+WARNING:root:Unable to parse response from Google API: broken api response
+test_primary_service_works (tests.test_geocode_proxy.TestGeocodeProxy) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.001s
+
+OK
+```
+
+This warning is expected, as it signals that the test has succeeded at
+simulating a broken API response from the first service to force a
+failover to the secondary service.
+
 
 ## Starting the service
 
 Run the service for development with Flask web server (default port ```9999```):
 
 ```
-cd src
-python3 geocode_proxy.py
+python3 geocode_app.py
 ```
+
 
 ## Using the API
 
@@ -42,19 +69,27 @@ Access the API by navigating to localhost:9999/coordinates/<some street address 
 
 Request:
 ```
-http://localhost:9999/coordinates/116th%20St%20&%20Broadway,%20New%20York,%20NY%2010027
+http://localhost:9999/coordinates/425+W+Randolph+Chicago
 ```
 
 Response:
 
 ```
 {
-    "lat": 40.80798,
-    "lng": -73.96381
+    "lng": -87.6387699,
+    "lat": 41.88449
 }
 ```
+
 
 ## Deployment notes
 
 Flask web server is not designed to be used in production. However, a Flask app is a WSGI application,
 so it can be deployed to production [in a variety of ways](http://flask.pocoo.org/docs/0.12/deploying/).
+Additional Flask configuration details can be found [here](http://flask.pocoo.org/docs/0.12/config/).
+
+For example, to host this app using uwsgi, use the following command:
+
+```
+uwsgi --socket 0.0.0.0:8000 --protocol=http --plugin python35 --manage-script-name --mount /=geocode_app:app
+```

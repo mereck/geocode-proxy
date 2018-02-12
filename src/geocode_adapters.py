@@ -1,6 +1,6 @@
 import logging
 from urllib import parse
-from geocode_helper import GeocodeServiceHelper
+from .geocode_helper import GeocodeServiceHelper
 
 
 class GeocodeServiceInterface:
@@ -36,14 +36,15 @@ class GoogleAdapter (GeocodeServiceInterface):
     Google geocode service adapter, responsible for transforming the input to and output from Google geocode API
     """
 
-    def __init__(self, config, is_primary):
+    def __init__(self, config, is_primary, api_helper):
         self.config = config["Google"]
         self.is_primary = is_primary
+        self.api_helper = api_helper
 
     def get_by_address(self, address):
         c = self.config
         url = c["Url"] + parse.urlencode({"Key": c["Key"], c["QueryParam"]: address})
-        result = GeocodeServiceHelper.invoke_api(url, "Google Geocode")
+        result = self.api_helper(url, "Google Geocode")
         return self.transform(result)
 
     def transform(self, result):
@@ -52,7 +53,7 @@ class GoogleAdapter (GeocodeServiceInterface):
             return loc["location"]
 
         else:
-            logging.warning("Unable to parse response from Google API: {}", result)
+            logging.warning("Unable to parse response from Google API: {}".format(result))
 
 
 class HereAdapter (GeocodeServiceInterface):
@@ -60,14 +61,15 @@ class HereAdapter (GeocodeServiceInterface):
     Here.com geocode service adapter, responsible for transforming the input to and output from Here geocode API
     """
 
-    def __init__(self, config, is_primary):
+    def __init__(self, config, is_primary, api_helper):
         self.config = config["Here"]
         self.is_primary = is_primary
+        self.api_helper = api_helper
 
     def get_by_address(self, address):
         c = self.config
         url = c["Url"] + parse.urlencode({"app_id": c["App_Id"], "app_code": c["App_Code"], c["QueryParam"]: address})
-        result = GeocodeServiceHelper.invoke_api(url, "Here Geocode")
+        result = self.api_helper(url, "Here Geocode")
         return self.transform(result)
 
     def transform(self, result):

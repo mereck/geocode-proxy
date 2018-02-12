@@ -11,7 +11,7 @@ class GeocodeServiceHelper:
     """
 
     @staticmethod
-    def get_config():
+    def get_config(file):
         """
         Utility method for loading configuration from a file
         :return: dict with config data
@@ -19,7 +19,7 @@ class GeocodeServiceHelper:
 
         config = configparser.ConfigParser()
         try:
-            config.read("config.ini")
+            config.read(file)
             return config
         except FileNotFoundError as ex:
             logging.error("problem accessing config.ini file: {}".format(ex))
@@ -59,7 +59,7 @@ class GeocodeServiceHelper:
         inspired by https://stackoverflow.com/a/14049167
         :param needles: keys to find
         :param haystack: dict to search
-        :return: generator of matches
+        :return: dict of matches
         """
         found = {}
         if type(needles) != type([]):
